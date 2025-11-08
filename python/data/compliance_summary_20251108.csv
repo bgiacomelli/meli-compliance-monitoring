@@ -1,0 +1,2 @@
+total_alerts,assigned_present,assigned_missing,unresolved_count,monetary_exposure_mean,monetary_exposure_p95,status_open,status_closed,status_in_progress,type_MISSING_INVOICE,type_INVOICE_AMOUNT_MISMATCH,type_WRONG_TAX_RATE,type_TAX_JURISDICTION_ERROR,impact_low,impact_high,impact_medium,impact_critical
+120,107,13,80,24244.69,48172.081,40,40,40,28,32,29,31,52,20,39,9
