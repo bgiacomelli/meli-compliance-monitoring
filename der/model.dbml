@@ -1,0 +1,203 @@
+Project meli_case {
+  database_type: "BigQuery"
+  Note: 'Modelo de Compliance & Monitoring (e-commerce) — Invoice & Tax, SCD de Itens'
+}
+
+Table party {
+  party_id        varchar [pk, note: 'ID interno da entidade']
+  party_type      varchar [not null, note: "'PERSON' | 'COMPANY'"]
+  tax_id_type     varchar [not null, note: "'CPF' | 'CNPJ' | ..."]
+  tax_id          varchar [not null, note: 'Documento fiscal normalizado']
+  country_code    varchar
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Cadastro mestre para comprador/vendedor (Party/Role pattern).'
+}
+
+Table customer {
+  customer_id     varchar [pk]
+  party_id        varchar [not null]
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Comprador; especialização de party.'
+}
+
+Table seller {
+  seller_id       varchar [pk]
+  party_id        varchar [not null]
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Vendedor (merchant); especialização de party.'
+}
+
+Table category {
+  category_id     varchar [pk]
+  category_name   varchar [not null]
+  parent_id       varchar
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Categorias hierárquicas; parent_id opcional.'
+}
+
+Table item {
+  item_id         varchar [pk]
+  seller_id       varchar [not null]
+  category_id     varchar [not null]
+  title           varchar
+  status          varchar [not null, note: "'ACTIVE'|'PAUSED'|'BLOCKED'|'DELISTED'"]
+  price           numeric [not null]
+  currency        varchar [not null, note: 'BRL']
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Estado corrente do item; histórico em item_scd.'
+}
+
+Table item_scd {
+  item_id         varchar [not null]
+  seller_id       varchar [not null]
+  category_id     varchar [not null]
+  status          varchar [not null]
+  price           numeric [not null]
+  currency        varchar [not null]
+  valid_from      timestamp [not null]
+  valid_to        timestamp
+  is_current      boolean  [not null]
+  Note: 'SCD Tipo 2: vigências [valid_from, valid_to). Chave lógica: (item_id, valid_from).'
+  indexes {
+    (item_id, valid_from) [name:'pk_item_scd_like']
+  }
+}
+
+Table "order" {
+  order_id        varchar [pk]
+  customer_id     varchar [not null]
+  seller_id       varchar [not null]
+  order_status    varchar [not null]
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Pedido; usado como âncora para pagamentos e faturamento.'
+}
+
+Table order_item {
+  order_id        varchar [not null]
+  order_item_id   varchar [not null]
+  item_id         varchar [not null]
+  quantity        int     [not null]
+  unit_price      numeric [not null, note:'Preço no pedido (sem imposto)']
+  discount_amount numeric
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Linhas do pedido. Chave composta: (order_id, order_item_id).'
+  indexes {
+    (order_id, order_item_id) [name:'pk_order_item_like', unique]
+  }
+}
+
+Table payment {
+  payment_id      varchar [pk]
+  order_id        varchar [not null]
+  paid_amount     numeric [not null]
+  currency        varchar [not null]
+  payment_status  varchar [not null, note:"'APPROVED'|'REFUNDED'|'CHARGEBACK'|'PENDING'"]
+  paid_at         timestamp [not null]
+  Note: '"Valor Total Pago" = soma dos payments APPROVED por pedido.'
+}
+
+Table invoice {
+  invoice_id      varchar [pk]
+  order_id        varchar [not null]
+  buyer_party_id  varchar [not null]
+  seller_party_id varchar [not null]
+  issue_date      date    [not null]
+  invoice_status  varchar [not null, note:"'ISSUED'|'VOIDED'|'PENDING'"]
+  total_invoiced  numeric [not null, note:'Total com impostos']
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Fatura fiscal vinculada ao pedido; IDs fiscais via party.'
+}
+
+Table invoice_item {
+  invoice_id      varchar [not null]
+  invoice_item_id varchar [not null]
+  order_id        varchar [not null]
+  order_item_id   varchar [not null]
+  item_id         varchar [not null]
+  quantity        int     [not null]
+  net_amount      numeric [not null, note:'Base sem imposto']
+  gross_amount    numeric [not null, note:'Valor com imposto']
+  created_at      timestamp [not null]
+  updated_at      timestamp [not null]
+  Note: 'Linhas da fatura. Chave composta: (invoice_id, invoice_item_id).'
+  indexes {
+    (invoice_id, invoice_item_id) [name:'pk_invoice_item_like', unique]
+  }
+}
+
+Table tax_calculation {
+  invoice_id      varchar [not null]
+  invoice_item_id varchar [not null]
+  tax_type        varchar [not null, note:'ICMS, IPI, PIS, COFINS, ISS...']
+  taxable_base    numeric [not null]
+  tax_rate        numeric [not null, note:'Ex.: 0.18']
+  tax_amount      numeric [not null]
+  jurisdiction    varchar
+  created_at      timestamp [not null]
+  Note: 'Possui 1..N impostos por linha de fatura. Chave lógica: (invoice_id, invoice_item_id, tax_type).'
+  indexes {
+    (invoice_id, invoice_item_id, tax_type) [name:'pk_tax_calc_like', unique]
+  }
+}
+
+Table audit_item_daily {
+  snapshot_date   date    [not null]
+  item_id         varchar [not null]
+  seller_id       varchar [not null]
+  category_id     varchar [not null]
+  price           numeric [not null]
+  status          varchar [not null]
+  run_id          varchar [not null]
+  inserted_at     timestamp [not null]
+  row_hash        varchar [not null]
+  Note: 'Snapshot EOD reprocessável para preço/status (idempotente).'
+  indexes {
+    (snapshot_date, item_id) [name:'pk_audit_like', unique]
+  }
+}
+
+/* =======================
+   RELACIONAMENTOS (FKs)
+   ======================= */
+Ref: customer.party_id > party.party_id
+Ref: seller.party_id > party.party_id
+
+Ref: item.seller_id > seller.seller_id
+Ref: item.category_id > category.category_id
+
+Ref: item_scd.item_id > item.item_id
+Ref: item_scd.seller_id > seller.seller_id
+Ref: item_scd.category_id > category.category_id
+
+Ref: "order".customer_id > customer.customer_id
+Ref: "order".seller_id   > seller.seller_id
+
+Ref: order_item.order_id > "order".order_id
+Ref: order_item.item_id  > item.item_id
+
+Ref: payment.order_id > "order".order_id
+
+Ref: invoice.order_id        > "order".order_id
+Ref: invoice.buyer_party_id  > party.party_id
+Ref: invoice.seller_party_id > party.party_id
+
+Ref: invoice_item.invoice_id     > invoice.invoice_id
+Ref: invoice_item.item_id        > item.item_id
+Ref: invoice_item.order_id       > "order".order_id
+Ref: invoice_item.(order_id, order_item_id) > order_item.(order_id, order_item_id)
+
+Ref: tax_calculation.(invoice_id, invoice_item_id) > invoice_item.(invoice_id, invoice_item_id)
+
+Ref: category.parent_id > category.category_id
+
+Ref: audit_item_daily.item_id     > item.item_id
+Ref: audit_item_daily.seller_id   > seller.seller_id
+Ref: audit_item_daily.category_id > category.category_id
