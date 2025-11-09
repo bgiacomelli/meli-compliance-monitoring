@@ -1,5 +1,3 @@
-Case Técnico Mercado Livre — Modelagem, SQL e Python para Compliance & Monitoring (BigQuery)
-
 # Compliance & Monitoring
 
 > Modelo e SQL para monitorar **faturação/impostos** e **reconciliação Pago × Faturado** no BigQuery.
