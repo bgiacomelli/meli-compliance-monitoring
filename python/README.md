@@ -41,8 +41,8 @@ python python/extract_compliance_data.py --self-test
 python python/extract_compliance_data.py --no-simulate --base-url https://api.mercadolibre.com --limit 200
 
 ## Output
-- [compliance_alerts_20251108.csv](python/data/compliance_alerts_20251108.csv): dados desnormalizados de alertas
-- [compliance_summary_20251108.csv](python/data/compliance_summary_20251108.csv): resumo com métricas EDA (distribuições, mean, p95)
+- [compliance_alerts_20251108.csv](data/compliance_alerts_20251108.csv): dados desnormalizados de alertas
+- [compliance_summary_20251108.csv](data/compliance_summary_20251108.csv): resumo com métricas EDA (distribuições, mean, p95)
 
 
 Exemplo (console):
