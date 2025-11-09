@@ -1,6 +1,6 @@
 Case Técnico Mercado Livre — Modelagem, SQL e Python para Compliance & Monitoring (BigQuery)
 
-# Compliance & Monitoring — E-commerce (`meli_case`)
+# Compliance & Monitoring
 
 > Modelo e SQL para monitorar **faturação/impostos** e **reconciliação Pago × Faturado** no BigQuery.
 > Entregáveis: **DER documentado**, **DDL** e **consultas** (discrepâncias, anomalias fiscais, snapshot reprocessável).
