@@ -9,13 +9,14 @@
 - Aplicar boas práticas: **retry**, **backoff**, **paginação**, tolerância a **schema drift**, **self-test** e **seed**.
 
 ## Estrutura
-/python/
-├── extract_compliance_data.py # script principal (CLI, simulador, HTTP, EDA, self-test)
+python/
+├── extract_compliance_data.py       # Script principal (CLI, simulador, HTTP, EDA, self-test)
 ├── docs/
-│ └── python_diagram.png # diagrama da arquitetura da solução
-├── data/
-│ ├── compliance_alerts_YYYYMMDD.csv # dados desnormalizados (flattened)
-│ └── compliance_summary_YYYYMMDD.csv # resumo EDA (distribuições, média, p95)
+│   └── python_diagram.png           # Diagrama da arquitetura da solução
+└── data/
+    ├── compliance_alerts_YYYYMMDD.csv   # Dados desnormalizados (flattened)
+    └── compliance_summary_YYYYMMDD.csv # Resumo EDA (distribuições, média, p95)
+
 
 ## Componentes
 | Componente | Função |
