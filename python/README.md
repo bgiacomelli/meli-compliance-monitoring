@@ -28,19 +28,28 @@ compliance_summary_YYYYMMDD.csv # resumo (EDA)
 ![Diagrama](docs/python_diagram.png)
 
 ## Execução
-# deps
+
+### Instalação de dependência
+```bash
 pip install requests
+```
 
-# Simulado (default) — gera CSVs em ./data
+### Simulado (default) — gera CSVs em ./data
+```bash
 python python/extract_compliance_data.py --simulate --limit 150 --page-size 50 --out-dir data
+```
 
-# Self-test (E2E com asserts; ≥100 linhas e schema esperado)
+### Self-test (E2E com asserts; ≥100 linhas e schema esperado)
+```bash
 python python/extract_compliance_data.py --self-test
+```
 
-# API real (se existir)
+### API real (se existir)
+```bash
 python python/extract_compliance_data.py --no-simulate --base-url https://api.mercadolibre.com --limit 200
+```
 
-## Output
+### Output
 - [compliance_alerts_20251108.csv](data/compliance_alerts_20251108.csv): dados desnormalizados de alertas
 - [compliance_summary_20251108.csv](data/compliance_summary_20251108.csv): resumo com métricas EDA (distribuições, mean, p95)
 
