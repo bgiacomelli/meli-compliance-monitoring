@@ -59,7 +59,7 @@ python python/extract_compliance_data.py --no-simulate --base-url https://api.me
 
 
 Exemplo (console):
-
+```text
 === Compliance Alerts — EDA (Resumo) ===
 Total: 150
 Status: open:65, in_progress:52, closed:33
@@ -68,7 +68,8 @@ Impacto: medium:54, high:30, low:20, critical:6
 Atribuídos: 126 | Sem dono: 24
 Sem resolução: 95
 Exposure mean: 16342.78 | p95: 47631.42
-🚧 Desafios comuns de APIs & Mitigação
+```
+## Desafios comuns de APIs & Mitigação
 Rate limit (429) → Retry exponencial (urllib3.Retry) + pausa leve por request.
 
 Intermitência (5xx)/timeouts → retries + timeout configurável; logs de progresso.
