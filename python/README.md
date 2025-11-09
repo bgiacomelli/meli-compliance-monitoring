@@ -25,7 +25,7 @@ compliance_summary_YYYYMMDD.csv # resumo (EDA)
 | `eda_summary()` | Métricas: dist. por status/tipo/impacto, sem dono, sem resolução, mean/p95 |
 
 ## Diagrama da Solução
-![Diagrama](python/docs/python_diagram.png)
+![Diagrama](docs/python_diagram.png)
 
 ## Execução
 # deps
