@@ -10,10 +10,12 @@
 
 ## Estrutura
 /python/
-extract_compliance_data.py # script principal (CLI, simulador, HTTP, EDA, self-test)
-data/
-compliance_alerts_YYYYMMDD.csv # dados desnormalizados
-compliance_summary_YYYYMMDD.csv # resumo (EDA)
+├── extract_compliance_data.py # script principal (CLI, simulador, HTTP, EDA, self-test)
+├── docs/
+│ └── python_diagram.png # diagrama da arquitetura da solução
+├── data/
+│ ├── compliance_alerts_YYYYMMDD.csv # dados desnormalizados (flattened)
+│ └── compliance_summary_YYYYMMDD.csv # resumo EDA (distribuições, média, p95)
 
 ## Componentes
 | Componente | Função |
