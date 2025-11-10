@@ -5,7 +5,7 @@ Painel em 2 páginas:
 - **Página 1 — Faturamento & Discrepâncias**: saúde de faturamento/impostos.
 - **Página 2 — Monitoramento de Alertas**: fluxo, SLA e visão geral de alertas.
 
-> Link público do painel: **TODO: cole aqui o URL do Looker Studio**
+> Link público do painel: **[Compliance & Monitoring](https://lookerstudio.google.com/s/lmEtLaaRlAQ)**
 
 ---
 
