@@ -1,4 +1,4 @@
-## Views
+--Views utilizadas no painel do Looker Studio
 --meli_case.vw_alerts_status
   CREATE OR REPLACE VIEW `meli_case.vw_discrepancies_trend_month` AS
 SELECT
