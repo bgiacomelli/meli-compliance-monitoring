@@ -9,7 +9,7 @@ Painel em 2 páginas:
 
 ---
 
-## Fontes de Dados (BigQuery)
+## Fontes de Dados (BigQuery) → [looker/views.sql](looker/views.sql)
 - `meli_case.vw_alerts_status`
 - `meli_case.vw_invoice_coverage_month`
 - `meli_case.vw_alerts_flow_daily`
