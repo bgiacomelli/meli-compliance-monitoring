@@ -1,5 +1,5 @@
 ## Modelo e SQL para monitorar **faturação/impostos** e **reconciliação Pago × Faturado** no BigQuery.
-> Entregáveis: **DER documentado**, **DDL** e **consultas** (discrepâncias, anomalias fiscais, snapshot reprocessável).
+### Entregáveis: **DER documentado**, **DDL** e **consultas** (discrepâncias, anomalias fiscais, snapshot reprocessável).
 
 ---
 
