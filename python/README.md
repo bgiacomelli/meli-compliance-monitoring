@@ -100,4 +100,4 @@ Decisões priorizam critérios importantes para Compliance & Monitoring: robuste
   **Aplicação:** Refatoração e organização de script com argparse e boas práticas
 
 
-> **Observação:** em todos os casos, as saídas foram **revisadas e ajustadas** por mim, com testes e validação de custos/compatibilidade no ambiente.
+> **Observação:** em todos os casos, as saídas foram **revisadas e ajustadas** por mim, com testes e validação de compatibilidade no ambiente.
